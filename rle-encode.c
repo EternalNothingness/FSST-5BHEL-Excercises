@@ -4,11 +4,13 @@
 char *encode(char *str)
 {
 	char *result_start;
-	char *(result = result_start);
+	char *result;
+	result = result_start;
 	
 	char temp = *str;
 	
-	char *(str_temp = str++);
+	char *str_temp;
+	str_temp = str++;
 
 	for(; str != "\0"; str++)
 	{
