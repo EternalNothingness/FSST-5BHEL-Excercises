@@ -12,6 +12,8 @@ Datum der letzten Bearbeitung: 21.10.2020
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_RLEN 42
+
 char *encode(char *str)
 {
 	char *result_start;
@@ -40,7 +42,17 @@ char *encode(char *str)
 	return result_start;
 }
 
-int main()
+int main(int argc, char **argv)
 {
-	return 0;
+	char str[MAX_RLEN];
+      
+       	do {	
+		if (fgets(str, MAX_RLEN, stdin) == NULL) break;
+		str[MAX_RLEN-1] = 0;    // TODO: is this really needed?
+		str[strlen(str)-1] = 0; // TODO: why is this here?
+		char* res = encode(str);
+		printf(">%s\n", res);
+		free(res);              // see: malloc
+	} while (strlen(str) > 1);
 }
+
