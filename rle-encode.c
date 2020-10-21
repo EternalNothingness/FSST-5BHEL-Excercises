@@ -22,7 +22,7 @@ char *encode(char *str)
 		}	
 	}
 	*result = temp;
-	*(++result) = "%i", cnt_char;
+	*(++result) = str-str_temp;
 
 	return *result_start;
 }
