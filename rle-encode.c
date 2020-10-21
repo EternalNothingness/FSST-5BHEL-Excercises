@@ -1,5 +1,11 @@
+/*
+Autor: Patrick Wintner
+Datum der letzten Bearbeitung: 21.10.2020
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 char *encode(char *str)
 {
