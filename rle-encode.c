@@ -4,24 +4,21 @@
 char *encode(char *str)
 {
 	char *result_start;
-	char *result;
-	result = result_start;
+	char *(result = result_start);
+	
 	char temp = *str;
-	int cnt_char = 1;
+	
+	char *(str_temp = str++);
 
 	for(; str != "\0"; str++)
 	{
-		if(temp == *str)
-		{
-			cnt_char++;
-		}
-		else
+		if(temp != *str)
 		{
 			*result = temp;
-			*(++result) = "%i", cnt_char;
+			*(++result) = str-str_temp;
 			result++;
+			str_temp = str;
 			temp = *str;
-			cnt_char = 1;
 		}	
 	}
 	*result = temp;
