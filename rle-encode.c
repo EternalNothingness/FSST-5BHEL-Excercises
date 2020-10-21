@@ -26,7 +26,7 @@ char *encode(char *str)
 	*result = temp;
 	*(++result) = str-str_temp;
 
-	return *result_start;
+	return result_start;
 }
 
 int main()
