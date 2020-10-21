@@ -1,4 +1,9 @@
 /*
+Titel: Einfache Kompression von Strings
+Beschreibung: Die Funktion *encode() "komprimiert" Strings,
+indem sie Anzahl gleicher Zeichen in Serie durch das entsprechende
+Zeichen, gefolgt von der Anzahl der Wiederholungen, ersetzt, z. B. 
+wird der String "AAbBc" in "A2b1B1c1" umgewandelt.
 Autor: Patrick Wintner
 Datum der letzten Bearbeitung: 21.10.2020
 */
