@@ -43,7 +43,7 @@ int file_copy(const char *filename, const char *newfilename)
 				close(handle_1);
 				return -3;
 			}
-		break;
+			break;
 		}
 		if (write(handle_1, buf, BUF_SIZE) == -1) 
 		{
