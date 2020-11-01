@@ -45,14 +45,14 @@ int file_copy(const char *filename, const char *newfilename)
 			}
 			break;
 		}
-		if (write(handle_1, buf, BUF_SIZE) == -1) 
+		if (write(handle_1, buf, n_read) == -1) 
 		{
 			close(handle_0);
 			close(handle_1);
 		 	return -4;
 		}
 	}
-	if (write(handle_1, buf, BUF_SIZE) == -1)
+	if (write(handle_1, buf, n_read) == -1)
 	{
 		close(handle_0);
 	 	close(handle_1);
