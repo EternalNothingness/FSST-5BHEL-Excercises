@@ -53,15 +53,30 @@ int file_copy(const char *filename, const char *newfilename)
 	return 0;
 }
 
+char *clrstring(char *string)
+{
+	for(int i = 0; ;i++)
+	{
+		if(string[i] == '\n') 
+		{
+			string[i] = '\0';
+			break;
+		}
+	}
+	return string;
+}
+
 int main()
 {
-	char *filename;
-	char *newfilename;
+	char filename[BUF_SIZE+1];
+	char newfilename[BUF_SIZE+1];
 
-	printf("Bitte Namen der zu kopierenden Datei eingeben: ");
-	scanf("%s", filename);
-	printf("\nBitte Namen der neuen Datei eigeben: ");
-	scanf("%s", newfilename);
+	puts("Bitte Namen der zu kopierenden Datei eingeben:");
+	fgets(filename, BUF_SIZE, stdin);
+	clrstring(filename);
+	puts("\nBitte Namen der neuen Datei eigeben:");
+	fgets(newfilename, BUF_SIZE, stdin);
+	clrstring(newfilename);
 
 	return file_copy(filename, newfilename);
 }
