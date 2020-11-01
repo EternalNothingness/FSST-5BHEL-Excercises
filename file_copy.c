@@ -26,7 +26,7 @@ int file_copy(const char *filename, const char *newfilename)
 
 	handle_0 = open(filename, O_RDONLY);
 	if(handle_0 == -1) return -1;
-	handle_1 = open(newfilename, O_CREAT | O_EXCL | O_WRONLY);
+	handle_1 = open(newfilename, O_CREAT | O_EXCL | O_WRONLY, S_IRWXU);
 	if(handle_1 == -1) 
 	{
 		close(handle_0);
