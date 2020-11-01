@@ -15,45 +15,73 @@ Datum der letzten Bearbeitung: 27.10.2020
 #include <sys/uio.h>
 #include <unistd.h>
 
-#define BUF_SIZE 20
+#define BUF_SIZE 20 // Definition der Groesse des Buffers in Byte
 
-int file_copy(const char *filename, const char *newfilename)
+// -- Funktion file_copy --
+// Parameter:
+//	* const char *filename ... Dateiname der zu kopierenden Datei
+//	* const char *newfilename ... Dateiname der Kopie
+//	* bool err_message_en ... enabelt(True)/disabelt(False) Fehlermeldungen
+// Beschreibung: 
+// 	file_copy kopiert den Inhalt der Datei filename in die Datei newfilename.
+// 	Sollte eine Datei mit den Namen newfilename schon existieren, so wird der Kopiervorgang abgebrochen.
+// Rueckgabewert:
+//	... wird zur Fehlercodierung verwendet:
+//	* 0: kein Fehler aufgetreten
+//	* -1/255: Fehler beim Oeffnen der zu kopierenden Datei
+//	* -2/254: Fehler beim Oeffnen/Erstellen der Kopie
+//	* -3/253: Fehler beim Lesen der zu kopierenden Datei
+//	* -4/252: Fehler beim Schreiben in die Kopie
+int file_copy(const char *filename, const char *newfilename, bool err_message_en)
 {
-	int handle_0;
-	int handle_1;
-	void *buf;
-	int n_read;
+	int handle_r; // handle fuer die zu kopierende Datei
+	int handle_w; // handle fuer Kopie
+	void *buf; // Buffer fuer gelesene Daten
+	int n_read; // gibt Anzahl gelesener Bytes an
 
-	handle_0 = open(filename, O_RDONLY);
-	if(handle_0 == -1) return -1;
-	handle_1 = open(newfilename, O_CREAT | O_EXCL | O_WRONLY, S_IRWXU);
-	if(handle_1 == -1) 
+	handle_r = open(filename, O_RDONLY); // O_RDONLY ... nur zum Lesen oeffnen
+	if(handle_r == -1) 
 	{
-		close(handle_0);
+		if(err_message_en == True) puts("Fehler beim Oeffnen der zu kopierenden Datei");
+		return -1;
+	}
+	handle_w = open(newfilename, O_CREAT | O_EXCL | O_WRONLY, S_IRWXU); // O_CREAT ... Datei erstellen; O_EXCL ... Fehler, wenn Datei schon existiert;
+										// O_WRONLY ... nur zum Schreiben oeffnen; // S_IRWXU ... gibt Eigentuemer Lese-, Schreib- und und Ausfu
+										// Ausfuehrungsrechte
+	if(handle_w == -1) // Fehlerpruefung
+	{
+		close(handle_r);
+		if(err_message_en == True) puts("Fehler beim Oeffnen/Erstellen der Kopie");
 		return -2;
 	}
-	for(n_read = 20; n_read >= 20;)
+	for(n_read = 20; n_read >= 20;)  // Wenn n_read weniger als 20 => EOF erreicht
 	{
-		n_read = read(handle_0, buf, BUF_SIZE);
-		if(n_read == -1) 
+		n_read = read(handle_r, buf, BUF_SIZE); // Daten werden in buf eingelesen
+		if(n_read == -1)  // Fehlerpruefung
 		{
-			close(handle_0);
-			close(handle_1);
+			close(handle_r);
+			close(handle_w);
+			if(err_message_en == True) puts("Fehler beim Lesen der zu kopierenden Datei");
 			return -3;
 		}
-		if (write(handle_1, buf, n_read) == -1) 
+		if (write(handle_w, buf, n_read) == -1)  // Schreiben der gelesenen Daten in Kopie + Fehlerpruefung
 		{
-			close(handle_0);
-			close(handle_1);
+			close(handle_r);
+			close(handle_w);
+			if(err_message_en == True) puts("Fehler beim Schreiben in die Kopie");
 		 	return -4;
 		}
 	}
-	close(handle_0);
-	close(handle_1);
+	close(handle_r);
+	close(handle_w);
 	return 0;
 }
 
-char *clrstring(char *string)
+// -- Funktion clr_str --
+// Parameter: *string ... zu saeubernder String
+// Beschreibung: clrstr ersetzt \n mit \0
+// Rueckgabewert: -
+void clr_str(char *string)
 {
 	for(int i = 0; ;i++)
 	{
@@ -63,7 +91,6 @@ char *clrstring(char *string)
 			break;
 		}
 	}
-	return string;
 }
 
 int main()
@@ -73,10 +100,10 @@ int main()
 
 	puts("Bitte Namen der zu kopierenden Datei eingeben:");
 	fgets(filename, BUF_SIZE, stdin);
-	clrstring(filename);
+	clr_str(filename);
 	puts("\nBitte Namen der neuen Datei eigeben:");
 	fgets(newfilename, BUF_SIZE, stdin);
-	clrstring(newfilename);
+	clr_str(newfilename);
 
-	return file_copy(filename, newfilename);
+	return file_copy(filename, newfilename, True);
 }
