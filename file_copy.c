@@ -14,6 +14,7 @@ Datum der letzten Bearbeitung: 27.10.2020
 #include <fcntl.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <stdbool.h> 
 
 #define BUF_SIZE 20 // Definition der Groesse des Buffers in Byte
 
@@ -21,7 +22,7 @@ Datum der letzten Bearbeitung: 27.10.2020
 // Parameter:
 //	* const char *filename ... Dateiname der zu kopierenden Datei
 //	* const char *newfilename ... Dateiname der Kopie
-//	* bool err_message_en ... enabelt(True)/disabelt(False) Fehlermeldungen
+//	* bool err_message_en ... enabelt(true)/disabelt(false) Fehlermeldungen
 // Beschreibung: 
 // 	file_copy kopiert den Inhalt der Datei filename in die Datei newfilename.
 // 	Sollte eine Datei mit den Namen newfilename schon existieren, so wird der Kopiervorgang abgebrochen.
@@ -42,7 +43,7 @@ int file_copy(const char *filename, const char *newfilename, bool err_message_en
 	handle_r = open(filename, O_RDONLY); // O_RDONLY ... nur zum Lesen oeffnen
 	if(handle_r == -1) 
 	{
-		if(err_message_en == True) puts("Fehler beim Oeffnen der zu kopierenden Datei");
+		if(err_message_en == true) puts("Fehler beim Oeffnen der zu kopierenden Datei");
 		return -1;
 	}
 	handle_w = open(newfilename, O_CREAT | O_EXCL | O_WRONLY, S_IRWXU); // O_CREAT ... Datei erstellen; O_EXCL ... Fehler, wenn Datei schon existiert;
@@ -51,7 +52,7 @@ int file_copy(const char *filename, const char *newfilename, bool err_message_en
 	if(handle_w == -1) // Fehlerpruefung
 	{
 		close(handle_r);
-		if(err_message_en == True) puts("Fehler beim Oeffnen/Erstellen der Kopie");
+		if(err_message_en == true) puts("Fehler beim Oeffnen/Erstellen der Kopie");
 		return -2;
 	}
 	for(n_read = 20; n_read >= 20;)  // Wenn n_read weniger als 20 => EOF erreicht
@@ -61,14 +62,14 @@ int file_copy(const char *filename, const char *newfilename, bool err_message_en
 		{
 			close(handle_r);
 			close(handle_w);
-			if(err_message_en == True) puts("Fehler beim Lesen der zu kopierenden Datei");
+			if(err_message_en == true) puts("Fehler beim Lesen der zu kopierenden Datei");
 			return -3;
 		}
 		if (write(handle_w, buf, n_read) == -1)  // Schreiben der gelesenen Daten in Kopie + Fehlerpruefung
 		{
 			close(handle_r);
 			close(handle_w);
-			if(err_message_en == True) puts("Fehler beim Schreiben in die Kopie");
+			if(err_message_en == true) puts("Fehler beim Schreiben in die Kopie");
 		 	return -4;
 		}
 	}
@@ -105,5 +106,5 @@ int main()
 	fgets(newfilename, BUF_SIZE, stdin);
 	clr_str(newfilename); // um \n durch \0 zu ersetzen
 
-	return file_copy(filename, newfilename, True);
+	return file_copy(filename, newfilename, true);
 }
