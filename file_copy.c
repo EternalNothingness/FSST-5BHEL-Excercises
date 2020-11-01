@@ -34,10 +34,10 @@ int file_copy(const char *filename, const char *newfilename)
 	}
 	for(;;)
 	{
-		nread = read(handle_0, buf, BUF_SIZE);
-		if(nread < 20)
+		n_read = read(handle_0, buf, BUF_SIZE);
+		if(n_read < 20)
 		{
-			if(nread == -1) 
+			if(n_read == -1) 
 			{
 				close(handle_0);
 				close(handle_1);
