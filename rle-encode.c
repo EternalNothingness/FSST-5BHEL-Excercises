@@ -14,29 +14,33 @@ Datum der letzten Bearbeitung: 21.10.2020
 
 #define MAX_RLEN 42
 
+// -- Funktion *encode --
+// Parameter: char *str ... zu komprimierender String
+// Beschreibung: siehe oben
+// Rueckgabewert: Adresse des komprimierten Strings
 char *encode(char *str)
 {
-	char *result_start;
-	char *result;
-	result = result_start;
+	char *result_strt = malloc(2*sizeof(str)); // Allozieren des maximal benoetigten Speicherplatzes
+	char *result; 
+	result = result_strt; 
 	
-	char *str_temp;
-	str_temp = str++;
+	char *str_temp; // zum temporaeren Speichern der Adresse und des letzten gleichen Zeichens
+	str_temp = str++; // Speichern der Startadresse auf str_temp
 
-	for(; str != "\0"; str++)
+	for(; *str != '\0'; str++)
 	{
 		if(*str_temp != *str)
 		{
-			*result = str_temp[0];
-			*(++result) = str-str_temp;
+			*result = *str_temp;
+			sprintf(++result, "%i", (str-str_temp));
 			result++;
 			str_temp = str;
 		}	
 	}
 	*result = *str_temp;
-	*(++result) = str-str_temp;
+	sprintf(++result, "%i", (str-str_temp));
 
-	return result_start;
+	return result_strt;
 }
 
 int main(int argc, char **argv)
@@ -52,4 +56,3 @@ int main(int argc, char **argv)
 		free(res);              // see: malloc
 	} while (strlen(str) > 1);
 }
-
