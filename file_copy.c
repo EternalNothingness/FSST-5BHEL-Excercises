@@ -79,7 +79,7 @@ int file_copy(const char *filename, const char *newfilename, bool err_message_en
 
 // -- Funktion clr_str --
 // Parameter: *string ... zu saeubernder String
-// Beschreibung: clrstr ersetzt \n mit \0
+// Beschreibung: clrstr ersetzt \n mit \0 (\n entsteht durch Enter bei Eingabe)
 // Rueckgabewert: -
 void clr_str(char *string)
 {
@@ -95,15 +95,15 @@ void clr_str(char *string)
 
 int main()
 {
-	char filename[BUF_SIZE+1];
-	char newfilename[BUF_SIZE+1];
+	char filename[BUF_SIZE+1]; // 20 Zeichen + \0
+	char newfilename[BUF_SIZE+1]; // 20 Zeichen + \0
 
 	puts("Bitte Namen der zu kopierenden Datei eingeben:");
 	fgets(filename, BUF_SIZE, stdin);
-	clr_str(filename);
+	clr_str(filename); // um \n durch \0 zu ersetzen
 	puts("\nBitte Namen der neuen Datei eigeben:");
 	fgets(newfilename, BUF_SIZE, stdin);
-	clr_str(newfilename);
+	clr_str(newfilename); // um \n durch \0 zu ersetzen
 
 	return file_copy(filename, newfilename, True);
 }
