@@ -22,7 +22,7 @@ int file_copy(const char *filename, const char *newfilename)
 	int handle_0;
 	int handle_1;
 	void *buf;
-	int nread;
+	int n_read;
 
 	handle_0 = open(filename, O_RDONLY);
 	if(handle_0 == -1) return -1;
