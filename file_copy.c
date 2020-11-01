@@ -32,18 +32,14 @@ int file_copy(const char *filename, const char *newfilename)
 		close(handle_0);
 		return -2;
 	}
-	for(;;)
+	for(n_read = 20; n_read >= 20;)
 	{
 		n_read = read(handle_0, buf, BUF_SIZE);
-		if(n_read < 20)
+		if(n_read == -1) 
 		{
-			if(n_read == -1) 
-			{
-				close(handle_0);
-				close(handle_1);
-				return -3;
-			}
-			break;
+			close(handle_0);
+			close(handle_1);
+			return -3;
 		}
 		if (write(handle_1, buf, n_read) == -1) 
 		{
@@ -51,12 +47,6 @@ int file_copy(const char *filename, const char *newfilename)
 			close(handle_1);
 		 	return -4;
 		}
-	}
-	if (write(handle_1, buf, n_read) == -1)
-	{
-		close(handle_0);
-	 	close(handle_1);
-		return -4;
 	}
 	close(handle_0);
 	close(handle_1);
